@@ -10,7 +10,7 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    public function session(): BelongsTo
+    public function period(): BelongsTo
     {
         return $this->belongsTo(Period::class, 'period_id');
     }
