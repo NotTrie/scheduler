@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('assistant_id')->constrained('assistants');
             $table->foreignId('period_id')->constrained('periods');
+            $table->foreignId('room_id')->constrained('rooms');
             $table->biginteger('slot_used');
             $table->timestamps();
         });

@@ -18,7 +18,9 @@ class AssistantPeriodResource extends Resource
 {
     protected static ?string $model = AssistantPeriod::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+
+    protected static ?string $navigationLabel = 'Assistant Generator';
 
     public static function form(Form $form): Form
     {
@@ -32,9 +34,23 @@ class AssistantPeriodResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('period.code'),
-                Tables\Columns\TextColumn::make('period.assistants.code')
-                    ->badge(),
+                Tables\Columns\TextColumn::make('period.day.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('period.schedules.room.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('period.start')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('period.end')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('period.code')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('assistant.code'),
+                
             ])
             ->filters([
                 //

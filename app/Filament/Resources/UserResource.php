@@ -2,22 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Tables;
+use Filament\Forms;
 use Filament\Forms\Form;
-use App\Models\Assistant;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\AssistantResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\AssistantResource\RelationManagers;
-use Filament\Tables\Columns\Column;
 
-class AssistantResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Assistant::class;
+    protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
@@ -25,16 +23,16 @@ class AssistantResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('user_id')
-                    ->label('User')
-                    ->options(User::all()->pluck('name', 'id'))
-                    ->searchable()
+                    ->label('Name')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->label('Email')
+                    ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->label('Password')
+                    ->password()
+                    ->revealable()
             ]);
     }
 
@@ -42,9 +40,8 @@ class AssistantResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
                 //
@@ -62,16 +59,16 @@ class AssistantResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AvailabilitiesRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAssistants::route('/'),
-            'create' => Pages\CreateAssistant::route('/create'),
-            'edit' => Pages\EditAssistant::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

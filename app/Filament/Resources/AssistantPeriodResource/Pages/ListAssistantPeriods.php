@@ -37,22 +37,52 @@ class ListAssistantPeriods extends ListRecords
 
             // Get available assistants for the session
             $available_assistants = DB::table('availabilities')
-                ->where('period_id', $period_id)
-                ->where('is_available', true)
-                ->pluck('assistant_id')
-                ->toArray();
+            ->where('period_id', $period_id)
+            ->where('is_available', true)
+            ->pluck('assistant_id')
+            ->toArray();
 
             // Run genetic algorithm to select assistants
             $selected_assistants = $this->runGeneticAlgorithm($available_assistants, $room_slot);
 
-            // Insert into assistant_session
-            foreach ($selected_assistants as $assistant_id) {
-                AssistantPeriod::create([
-                    'period_id' => $schedule->id,
-                    'assistant_id' => $assistant_id,
-                    'slot_used' => 1,
-                ]);
+            // insert the selected assistants into the database
+            // some schedule has same period_id with different room_id
+            // so we need to check if the assistant is already assigned to the room that has the same period_id
+            // then we skip it for the next room that has the same period_id
+
+            foreach ($schedules as $schedule) {
+                // Get the session and room details
+                $period_id = $schedule->period_id;
+                $room_id = $schedule->room_id;
+                $room_slot = DB::table('rooms')->where('id', $room_id)->value('slot');
+            
+                // Get available assistants for the session
+                $available_assistants = DB::table('availabilities')
+                    ->where('period_id', $period_id)
+                    ->where('is_available', true)
+                    ->pluck('assistant_id')
+                    ->toArray();
+            
+                foreach ($available_assistants as $assistant_id) {
+                    // Check if the assistant is already assigned to the same period in any room
+                    $is_assigned_same_period = AssistantPeriod::where('assistant_id', $assistant_id)
+                        ->where('period_id', $period_id)
+                        ->where('room_id', $room_id)
+                        ->exists();
+            
+                    if ($is_assigned_same_period) {
+                        continue;
+                    }
+            
+                    AssistantPeriod::create([
+                        'assistant_id' => $assistant_id,
+                        'period_id' => $period_id,
+                        'room_id' => $room_id,
+                        'slot_used' => 1,
+                    ]);
+                }
             }
+
         }
 
         session()->flash('success', 'Generation complete.');
@@ -60,8 +90,6 @@ class ListAssistantPeriods extends ListRecords
 
     private function runGeneticAlgorithm($available_assistants, $room_slot)
     {
-        // Simple genetic algorithm implementation
-        // For demonstration, we'll randomly select assistants
         if (count($available_assistants) <= $room_slot) {
             return $available_assistants;
         }
