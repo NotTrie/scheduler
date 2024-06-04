@@ -20,7 +20,7 @@ class Assistant extends Model
 
     public function periods(): BelongsToMany
     {
-        return $this->belongsToMany(Period::class, 'assistant_period', 'assistant_id', 'period_id')
+        return $this->belongsToMany(Period::class, 'assistant_periods')
             ->withPivot('slot_used');
     }
 

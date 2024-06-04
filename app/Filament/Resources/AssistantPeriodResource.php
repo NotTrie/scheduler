@@ -32,7 +32,9 @@ class AssistantPeriodResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('period.code'),
+                Tables\Columns\TextColumn::make('period.assistants.code')
+                    ->badge(),
             ])
             ->filters([
                 //

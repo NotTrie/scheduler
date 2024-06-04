@@ -58,6 +58,11 @@ class ScheduleResource extends Resource
                     ->label('Room')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('period.assistants.code')
+                    ->label('Assistant')
+                    ->badge()
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
