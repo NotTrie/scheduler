@@ -19,4 +19,24 @@ class AssistantPeriod extends Model
     {
         return $this->belongsTo(Assistant::class, 'assistant_id');
     }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $exists = static::where('assistant_id', $model->assistant_id)
+                ->where('period_id', $model->period_id)
+                ->exists();
+
+            if ($exists) {
+                throw new \Exception("Assistant already assigned to this period.");
+            }
+        });
+    }
 }

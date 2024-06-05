@@ -37,7 +37,7 @@ class AssistantPeriodResource extends Resource
                 Tables\Columns\TextColumn::make('period.day.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('period.schedules.room.name')
+                Tables\Columns\TextColumn::make('room.name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('period.start')
@@ -46,11 +46,10 @@ class AssistantPeriodResource extends Resource
                 Tables\Columns\TextColumn::make('period.end')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('period.code')
+                Tables\Columns\TextColumn::make('period.assistants.code')                  
+                    ->badge()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('assistant.code'),
-                
             ])
             ->filters([
                 //

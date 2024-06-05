@@ -12,11 +12,13 @@ return new class extends Migration {
     {
         Schema::create('assistant_periods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assistant_id')->constrained('assistants');
-            $table->foreignId('period_id')->constrained('periods');
-            $table->foreignId('room_id')->constrained('rooms');
-            $table->biginteger('slot_used');
+            $table->foreignId('assistant_id')->constrained()->onDelete('cascade');
+            $table->foreignId('period_id')->constrained()->onDelete('cascade');
+            $table->foreignId('room_id')->constrained()->onDelete('cascade');
+            $table->integer('slot_used');
             $table->timestamps();
+
+            $table->unique(['assistant_id', 'period_id'], 'unique_assistant_period');
         });
     }
 
