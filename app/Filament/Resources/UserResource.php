@@ -33,6 +33,12 @@ class UserResource extends Resource
                     ->label('Password')
                     ->password()
                     ->revealable()
+                    ->required(),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 
