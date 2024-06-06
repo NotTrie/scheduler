@@ -42,9 +42,13 @@ class AssistantResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code'),
+                Tables\Columns\TextColumn::make('code')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
