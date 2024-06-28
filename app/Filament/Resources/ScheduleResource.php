@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ScheduleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ScheduleResource\RelationManagers;
+use App\Models\Skill;
 
 class ScheduleResource extends Resource
 {
@@ -33,6 +34,11 @@ class ScheduleResource extends Resource
                 Forms\Components\Select::make('room_id')
                     ->label('Room')
                     ->options(Room::pluck('name', 'id'))
+                    ->required()
+                    ->searchable(),
+                Forms\Components\Select::make('skill_id')
+                    ->label('Skill')
+                    ->options(Skill::pluck('name', 'id'))
                     ->required()
                     ->searchable(),
             ]);
@@ -56,6 +62,10 @@ class ScheduleResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('room.name')
                     ->label('Room')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('skill.name')
+                    ->label('Skill Required')
                     ->searchable()
                     ->sortable(),
             ])
