@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\AssistantPeriodExporter;
 use App\Filament\Resources\AssistantPeriodResource\Pages;
 use App\Filament\Resources\AssistantPeriodResource\RelationManagers;
 use App\Models\AssistantPeriod;
@@ -46,7 +47,7 @@ class AssistantPeriodResource extends Resource
                 Tables\Columns\TextColumn::make('period.end')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('period.assistants.code')                  
+                Tables\Columns\TextColumn::make('period.assistants.code')
                     ->badge()
                     ->searchable()
                     ->sortable(),
@@ -59,6 +60,8 @@ class AssistantPeriodResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\ExportBulkAction::make()
+                        ->exporter(AssistantPeriodExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
