@@ -29,4 +29,11 @@ class Assistant extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function skills(): BelongsToMany
+    {
+        return $this->belongsToMany(Skill::class, 'assistant_skills', 'assistant_id', 'skill_id')
+            ->withPivot('proficiency_level')
+            ->withTimestamps();
+    }
 }

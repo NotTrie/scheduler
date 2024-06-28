@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Period;
+use App\Models\Room;
+use App\Models\Skill;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +15,9 @@ return new class extends Migration {
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('period_id')->constrained('periods');
-            $table->foreignId('room_id')->constrained('rooms');
+            $table->foreignIdFor(Period::class);
+            $table->foreignIdFor(Room::class);
+            $table->foreignIdFor(Skill::class);
             $table->timestamps();
         });
     }

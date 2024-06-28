@@ -19,4 +19,9 @@ class Schedule extends Model
     {
         return $this->belongsTo(Room::class, 'room_id');
     }
+
+    public function skill(): BelongsTo
+    {
+        return $this->belongsTo(Skill::class);
+    }
 }
