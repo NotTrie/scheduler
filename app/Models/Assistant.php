@@ -29,4 +29,9 @@ class Assistant extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function skills(): HasMany
+    {
+        return $this->hasMany(AssistantSkill::class);
+    }
 }

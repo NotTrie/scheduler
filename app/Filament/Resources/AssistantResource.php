@@ -67,6 +67,7 @@ class AssistantResource extends Resource
     {
         return [
             RelationManagers\AvailabilitiesRelationManager::class,
+            RelationManagers\SkillsRelationManager::class,
         ];
     }
 
