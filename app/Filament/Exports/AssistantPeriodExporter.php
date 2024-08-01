@@ -22,7 +22,7 @@ class AssistantPeriodExporter extends Exporter
                 ->label('Start'),
             ExportColumn::make('period.end')
                 ->label('End'),
-            ExportColumn::make('period.assistants.code')
+            ExportColumn::make('assistant.code')
                 ->label('Assistant'),
         ];
     }

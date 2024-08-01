@@ -26,12 +26,12 @@ class ListAssistantPeriods extends ListRecords
         ];
     }
 
-    protected function getTableQuery(): Builder
-    {
-        return AssistantPeriod::select('assistant_periods.*')
-            ->join('periods', 'assistant_periods.period_id', '=', 'periods.id')
-            ->groupBy('periods.code');
-    }
+    // protected function getTableQuery(): Builder
+    // {
+    //     return AssistantPeriod::select('assistant_periods.*')
+    //         ->join('periods', 'assistant_periods.period_id', '=', 'periods.id')
+    //         ->groupBy('periods.code');
+    // }
 
     public function generateAssistants()
     {
@@ -55,6 +55,16 @@ class ListAssistantPeriods extends ListRecords
             $selected_assistants = $this->runGeneticAlgorithm($available_assistants, $room_slot, $course_skill_id);
 
             foreach ($selected_assistants as $assistant_id) {
+                // Check if the room is already fully booked
+                $currentSlotUsed = DB::table('assistant_periods')
+                    ->where('period_id', $period_id)
+                    ->where('room_id', $room_id)
+                    ->sum('slot_used');
+
+                if ($currentSlotUsed >= $room_slot) {
+                    continue; // Skip if the room is fully booked
+                }
+
                 $is_assigned_same_period = DB::table('assistant_periods')
                     ->where('assistant_id', $assistant_id)
                     ->where('period_id', $period_id)
@@ -71,12 +81,16 @@ class ListAssistantPeriods extends ListRecords
                     }
                 }
 
-                DB::table('assistant_periods')->insert([
-                    'assistant_id' => $assistant_id,
-                    'period_id' => $period_id,
-                    'room_id' => $room_id,
-                    'slot_used' => 1,
-                ]);
+                // Re-check slot availability before inserting
+                $remainingSlots = $room_slot - $currentSlotUsed;
+                if ($remainingSlots > 0) {
+                    DB::table('assistant_periods')->insert([
+                        'assistant_id' => $assistant_id,
+                        'period_id' => $period_id,
+                        'room_id' => $room_id,
+                        'slot_used' => 1,
+                    ]);
+                }
             }
         }
 
@@ -95,7 +109,7 @@ class ListAssistantPeriods extends ListRecords
 
         // Initial population (random selection)
         $population = [];
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             shuffle($available_assistants);
             $population[] = array_slice($available_assistants, 0, $room_slot);
         }
@@ -106,7 +120,7 @@ class ListAssistantPeriods extends ListRecords
         };
 
         // Evolution process
-        for ($generation = 0; $generation < 100; $generation++) {
+        for ($generation = 0; $generation < 50; $generation++) {
             // Selection (e.g., tournament selection)
             usort($population, function($a, $b) use ($fitness) {
                 return $fitness($b) <=> $fitness($a);
