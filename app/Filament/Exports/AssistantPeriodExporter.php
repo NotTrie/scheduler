@@ -18,6 +18,8 @@ class AssistantPeriodExporter extends Exporter
                 ->label('Day'),
             ExportColumn::make('room.name')
                 ->label('Room'),
+            ExportColumn::make('period.code')
+                ->label('Code'),
             ExportColumn::make('period.start')
                 ->label('Start'),
             ExportColumn::make('period.end')

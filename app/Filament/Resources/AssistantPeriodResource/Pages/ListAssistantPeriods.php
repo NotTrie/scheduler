@@ -109,7 +109,7 @@ class ListAssistantPeriods extends ListRecords
 
         // Initial population (random selection)
         $population = [];
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             shuffle($available_assistants);
             $population[] = array_slice($available_assistants, 0, $room_slot);
         }
@@ -120,7 +120,7 @@ class ListAssistantPeriods extends ListRecords
         };
 
         // Evolution process
-        for ($generation = 0; $generation < 50; $generation++) {
+        for ($generation = 0; $generation < 25; $generation++) {
             // Selection (e.g., tournament selection)
             usort($population, function($a, $b) use ($fitness) {
                 return $fitness($b) <=> $fitness($a);

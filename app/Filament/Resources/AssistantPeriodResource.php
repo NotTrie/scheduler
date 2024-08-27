@@ -52,10 +52,16 @@ class AssistantPeriodResource extends Resource
                 Tables\Columns\TextColumn::make('room.name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('period.code')
+                    ->label('Code Periode')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('period.start')
+                    ->label('Periode Start')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('period.end')
+                    ->label('Periode End')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('assistant.code')
