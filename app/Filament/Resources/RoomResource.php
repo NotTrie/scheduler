@@ -38,7 +38,6 @@ class RoomResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->translateLabel()
-                    ->label('Name')
                     ->required(),
                 Forms\Components\Radio::make('slot')
                     ->translateLabel()
@@ -56,9 +55,18 @@ class RoomResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('slot'),
+                Tables\Columns\TextColumn::make('code')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('slot')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
