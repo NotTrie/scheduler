@@ -19,18 +19,29 @@ class RoomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
+    public static function getModelLabel(): string
+    {
+        return __('Room');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Rooms');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('code')
-                    ->label('Code')
+                    ->translateLabel()
                     ->required(),
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->label('Name')
                     ->required(),
                 Forms\Components\Radio::make('slot')
-                    ->label('Slot')
+                    ->translateLabel()
                     ->options([
                         '1' => 'Slot 1',
                         '2' => 'Slot 2',

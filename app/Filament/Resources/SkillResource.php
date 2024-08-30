@@ -22,13 +22,23 @@ class SkillResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getModelLabel(): string
+    {
+        return __('Skill');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Skills');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label('Name')
-                    ->live()
+                    ->translateLabel()
+                    ->lazy()
                     ->required()
                     ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                         if($operation == 'edit') {
@@ -38,7 +48,7 @@ class SkillResource extends Resource
                         $set('slug', Str::slug($state));
                     }),
                 TextInput::make('slug')
-                    ->label('Slug')
+                    ->translateLabel()
                     ->required()
                     ->unique(ignoreRecord:true),
             ]);
@@ -49,11 +59,11 @@ class SkillResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('slug')
-                    ->label('Slug')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
             ])

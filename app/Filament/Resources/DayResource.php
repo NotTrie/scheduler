@@ -19,14 +19,26 @@ class DayResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
+    public static function getModelLabel(): string
+    {
+        return __('Day');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Days');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('code')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -36,9 +48,16 @@ class DayResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code'),
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('code')
+                    ->translateLabel()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('periods.code')
+                    ->label(__('Periods'))
                     ->badge(),
             ])
             ->filters([
