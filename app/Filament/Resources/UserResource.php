@@ -19,23 +19,34 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Users');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Name')
+                    ->translateLabel()
                     ->required(),
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->required(),
                 Forms\Components\TextInput::make('password')
-                    ->label('Password')
+                    ->translateLabel()
                     ->password()
                     ->revealable()
                     ->required(),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
+                    ->translateLabel()
                     ->multiple()
                     ->preload()
                     ->searchable(),
@@ -46,8 +57,14 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //

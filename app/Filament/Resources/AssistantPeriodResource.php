@@ -28,13 +28,35 @@ class AssistantPeriodResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $navigationLabel = 'Assistant Generator';
+    public static function getModelLabel(): string
+    {
+        return __('Assistant Period');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Assistant Periods');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                    Forms\Components\Select::make('period_id')
+                        ->label(__('Period'))
+                        ->relationship('period', 'code')
+                        ->required()
+                        ->searchable(),
+                    Forms\Components\Select::make('room_id')
+                        ->label(__('Room'))
+                        ->relationship('room', 'name')
+                        ->required()
+                        ->searchable(),
+                    Forms\Components\Select::make('assistant_id')
+                        ->label(__('Assistant'))
+                        ->relationship('assistant', 'code')
+                        ->required()
+                        ->searchable(),
             ]);
     }
 
@@ -47,25 +69,28 @@ class AssistantPeriodResource extends Resource
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('period.day.name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('room.name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('period.code')
-                    ->label('Code Periode')
+                    ->label(__('Period Code'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('period.start')
-                    ->label('Periode Start')
+                    ->label(__('Period Start'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('period.end')
-                    ->label('Periode End')
+                    ->label(__('Period End'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('assistant.code')
                     ->badge()
+                    ->label(__('Assistant Code'))
                     ->searchable()
                     ->sortable(),
             ])

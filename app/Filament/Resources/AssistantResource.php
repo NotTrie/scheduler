@@ -21,18 +21,30 @@ class AssistantResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
+    public static function getModelLabel(): string
+    {
+        return __('Assistant');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Assistants');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('code')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('user_id')
-                    ->label('User')
+                    ->label(__('User'))
                     ->options(User::all()->pluck('name', 'id'))
                     ->searchable()
             ]);
@@ -43,10 +55,15 @@ class AssistantResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label(__('User'))
                     ->searchable()
                     ->sortable(),
             ])

@@ -19,7 +19,7 @@ class ListAssistantPeriods extends ListRecords
         return [
             Actions\CreateAction::make(),
             Actions\Action::make('Generate')
-                ->label('Generate')
+                ->translateLabel()
                 ->action('generateAssistants')
                 ->color('success')
                 ->icon('heroicon-o-cog'),

@@ -22,22 +22,32 @@ class ScheduleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
+    public static function getModelLabel(): string
+    {
+        return __('Schedule');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Schedules');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('period_id')
-                    ->label('Period')
+                    ->label(__('Period'))
                     ->options(Period::pluck('code', 'id'))
                     ->required()
                     ->searchable(),
                 Forms\Components\Select::make('room_id')
-                    ->label('Room')
+                    ->label(__('Room'))
                     ->options(Room::pluck('name', 'id'))
                     ->required()
                     ->searchable(),
                 Forms\Components\Select::make('skill_id')
-                    ->label('Skill')
+                    ->label(__('Skill'))
                     ->options(Skill::pluck('name', 'id'))
                     ->required()
                     ->searchable(),
