@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class AssistantPeriod extends Model
 {
@@ -24,6 +25,12 @@ class AssistantPeriod extends Model
     {
         return $this->belongsTo(Room::class, 'room_id');
     }
+
+    public function schedule(): HasOneThrough
+    {
+        return $this->hasOneThrough(Schedule::class, Period::class, 'id', 'period_id');
+    }
+
 
     public static function boot()
     {

@@ -42,21 +42,25 @@ class AssistantPeriodResource extends Resource
     {
         return $form
             ->schema([
-                    Forms\Components\Select::make('period_id')
-                        ->label(__('Period'))
-                        ->relationship('period', 'code')
-                        ->required()
-                        ->searchable(),
-                    Forms\Components\Select::make('room_id')
-                        ->label(__('Room'))
-                        ->relationship('room', 'name')
-                        ->required()
-                        ->searchable(),
-                    Forms\Components\Select::make('assistant_id')
-                        ->label(__('Assistant'))
-                        ->relationship('assistant', 'code')
-                        ->required()
-                        ->searchable(),
+                Forms\Components\Select::make('period_id')
+                    ->label(__('Period'))
+                    ->relationship('period', 'code')
+                    ->required()
+                    ->searchable(),
+                Forms\Components\Select::make('room_id')
+                    ->label(__('Room'))
+                    ->relationship('room', 'name')
+                    ->required()
+                    ->searchable(),
+                Forms\Components\Select::make('assistant_id')
+                    ->label(__('Assistant'))
+                    ->relationship('assistant', 'name')
+                    ->required()
+                    ->searchable(),
+                Forms\Components\TextInput::make('slot_used')
+                    ->label(__('Slot Used'))
+                    ->required()
+                    ->type('number'),
             ]);
     }
 
@@ -93,6 +97,10 @@ class AssistantPeriodResource extends Resource
                     ->label(__('Assistant Code'))
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('schedule.skill.name')
+                    ->label(__('Course'))
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 QueryBuilder::make()
@@ -106,7 +114,7 @@ class AssistantPeriodResource extends Resource
                             )
                     ]),
 
-                ], layout: FiltersLayout::AboveContent)
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
