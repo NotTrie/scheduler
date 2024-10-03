@@ -28,9 +28,15 @@ class AssistantPeriod extends Model
 
     public function schedule(): HasOneThrough
     {
-        return $this->hasOneThrough(Schedule::class, Period::class, 'id', 'period_id');
+        return $this->hasOneThrough(
+            Schedule::class,
+            Period::class,
+            'id',
+            'period_id',
+            'period_id',
+            'id'
+        );
     }
-
 
     public static function boot()
     {
